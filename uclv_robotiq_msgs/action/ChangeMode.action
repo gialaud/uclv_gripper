@@ -1,0 +1,11 @@
+# Action message for changing Gripper Mode
+
+# goal
+uint8 target_mode # 0: basic, 1: pinch, 2: wide, 3: scissor
+bool individual_finger_control # True: each finger can be controlled individually, False: all fingers move together
+bool individual_scissor_control # True: scissor can be controlled individually, False: scissor moves together with fingers
+---
+# result
+bool success # Did it achieve the goal?
+---
+# feedback
