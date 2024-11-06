@@ -58,11 +58,6 @@ namespace uclv
 
             if(reset_and_activate)
             {
-                //sleep for 0.5 second to allow the gripper to reset
-                rclcpp::sleep_for(std::chrono::milliseconds(500));
-                reset_gripper(); 
-                //sleep for 0.5 second to allow the gripper to reset
-                rclcpp::sleep_for(std::chrono::milliseconds(500));
                 activate_gripper();
             }
 

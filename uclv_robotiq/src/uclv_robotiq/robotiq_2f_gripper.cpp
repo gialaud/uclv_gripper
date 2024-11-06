@@ -17,6 +17,8 @@ namespace uclv
         setSpeed(100);
         setForce(100);
         startUpdateStatusThread();
+        // sleep to allow reset
+        usleep(500000);
     }
 
     Robotiq2fGripper::Robotiq2fGripper(const std::string &port, uint8_t slave_id)
@@ -28,6 +30,8 @@ namespace uclv
         setSpeed(100);
         setForce(100);
         startUpdateStatusThread();
+        // sleep to allow reset
+        usleep(500000);
     }
 
     Robotiq2fGripper::~Robotiq2fGripper()
@@ -51,7 +55,6 @@ namespace uclv
             }
             readStatus();
             // usleep(10000); // the sleep should be addressed in the sending of messages
-
             if (_first_start)
             {
                 if (_status.gACT == 1 && _status.gSTA == 0) // powered on for the first time, reset needed
