@@ -65,6 +65,7 @@ namespace uclv
                 {
                     _rACT = _status.gACT;
                     _rGTO = _status.gGTO;
+                    _finger.rPR = _finger.status.gPR;
                 }
                 _first_start = false;               
             }
