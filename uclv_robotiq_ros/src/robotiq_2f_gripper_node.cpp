@@ -3,6 +3,7 @@
 #include "uclv_robotiq_interfaces/msg/finger_command_array.hpp"
 #include "uclv_robotiq/robotiq_2f_gripper.h"
 #include "std_srvs/srv/trigger.hpp"
+#include "sensor_msgs/msg/joint_state.hpp"
 
 namespace uclv
 {
@@ -10,6 +11,7 @@ namespace uclv
     {
         private:
         rclcpp::Publisher<uclv_robotiq_interfaces::msg::GripperStatus>::SharedPtr _gripper_status_pub;
+        rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr _gripper_joint_state_pub;
         std::string gripper_ip;
         double frequency;
         int port;
@@ -27,6 +29,7 @@ namespace uclv
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr service_stop;
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr service_open;
         rclcpp::Service<std_srvs::srv::Trigger>::SharedPtr service_close;
+        sensor_msgs::msg::JointState joint_state_msg;
 
         public:
         Robotiq2fGripperROS(const rclcpp::NodeOptions& options = rclcpp::NodeOptions()) : rclcpp::Node("robotiq_2f_gripper", options)
@@ -69,6 +72,10 @@ namespace uclv
 
             _gripper_status_pub = this->create_publisher<uclv_robotiq_interfaces::msg::GripperStatus>("gripper_status", 10);
 
+            _gripper_joint_state_pub = this->create_publisher<sensor_msgs::msg::JointState>("joint_states", 10);
+            joint_state_msg.name.push_back("hande_joint");
+            joint_state_msg.position.push_back(0.0);
+
             service_activate =
                 this->create_service<std_srvs::srv::Trigger>("gripper_activate", std::bind(&Robotiq2fGripperROS::activateCallback, this, _1, _2));
             service_reset =
@@ -101,6 +108,10 @@ namespace uclv
 
             gripper_status_msg.header.stamp = this->get_clock()->now();
             _gripper_status_pub->publish(gripper_status_msg);
+
+            joint_state_msg.header.stamp = this->get_clock()->now();
+            joint_state_msg.position.at(0) = abs((gripper_status_msg.fingers[0].g_pr - 3.0) * (-0.0006 - (-0.025)) / (249.0 - 3.0) + (-0.025));
+            _gripper_joint_state_pub->publish(joint_state_msg);
         }
 
         void fingers_command_callbk(const uclv_robotiq_interfaces::msg::FingerCommandArray::ConstSharedPtr& msg)

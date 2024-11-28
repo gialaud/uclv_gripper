@@ -13,6 +13,7 @@ find_package(uclv_robotiq REQUIRED)
 find_package(uclv_modbus REQUIRED)
 find_package(uclv_robotiq_interfaces REQUIRED)
 find_package(std_srvs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -20,7 +21,7 @@ find_package(std_srvs REQUIRED)
 # add_executable(robotiq_3f_gripper_node src/robotiq_3f_gripper_node.cpp)
 # ament_target_dependencies(robotiq_3f_gripper_node rclcpp std_msgs uclv_robotiq uclv_robotiq_interfaces std_srvs)
 add_executable(robotiq_2f_gripper_node src/robotiq_2f_gripper_node.cpp)
-ament_target_dependencies(robotiq_2f_gripper_node rclcpp std_msgs uclv_robotiq uclv_robotiq_interfaces std_srvs uclv_modbus)
+ament_target_dependencies(robotiq_2f_gripper_node rclcpp std_msgs uclv_robotiq uclv_robotiq_interfaces std_srvs uclv_modbus sensor_msgs)
 
 install(TARGETS
   # robotiq_3f_gripper_node 
