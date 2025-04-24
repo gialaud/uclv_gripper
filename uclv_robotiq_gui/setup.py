@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'hand_e_gui = uclv_robotiq_gui.hand_e_gui:main', 
+        	'hand_e_gui = uclv_robotiq_gui.hand_e_gui:main',
+            '3f_gui = uclv_robotiq_gui.3f_gui:main', 
         ],
     },
 )
