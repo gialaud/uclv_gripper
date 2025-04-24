@@ -60,16 +60,17 @@ namespace uclv
             }
             if(reset_and_activate)
             {
-                _gripper->reset();
-                _gripper->activate();
+                reset_gripper();
+                usleep(1000000); // wait for 1 second
+                activate_gripper();
             }
-            _gripper_status_pub = this->create_publisher<uclv_robotiq_interfaces::msg::GripperStatus>("3f_gripper_status", 10);
+            _gripper_status_pub = this->create_publisher<uclv_robotiq_interfaces::msg::GripperStatus>("threef_gripper_status", 10);
             _fingers_command_sub = this->create_subscription<uclv_robotiq_interfaces::msg::FingerCommandArray>(
-                "3f_fingers_command", 10, std::bind(&Robotiq3fGripperROS::fingers_command_callbk, this, _1));
+                "threef_fingers_command", 10, std::bind(&Robotiq3fGripperROS::fingers_command_callbk, this, _1));
             
             action_server_change_mode = rclcpp_action::create_server<ChangeMode>(
                 this,
-                "3f_change_mode",
+                "threef_change_mode",
                 std::bind(&Robotiq3fGripperROS::handle_change_mode_goal, this, _1, _2),
                 std::bind(&Robotiq3fGripperROS::handle_change_mode_cancel, this, _1),
                 std::bind(&Robotiq3fGripperROS::handle_change_mode_accepted, this, _1));
@@ -78,15 +79,15 @@ namespace uclv
                 std::chrono::milliseconds(static_cast<int>(1000.0 / frequency)), std::bind(&Robotiq3fGripperROS::status_callback, this));
             
                 service_activate =
-                this->create_service<std_srvs::srv::Trigger>("3f_gripper_activate", std::bind(&Robotiq3fGripperROS::activateCallback, this, _1, _2));
+                this->create_service<std_srvs::srv::Trigger>("threef_gripper_activate", std::bind(&Robotiq3fGripperROS::activateCallback, this, _1, _2));
             service_reset =
-                this->create_service<std_srvs::srv::Trigger>("3f_gripper_reset", std::bind(&Robotiq3fGripperROS::resetCallback, this, _1, _2));
+                this->create_service<std_srvs::srv::Trigger>("threef_gripper_reset", std::bind(&Robotiq3fGripperROS::resetCallback, this, _1, _2));
             service_stop =
-                this->create_service<std_srvs::srv::Trigger>("3f_gripper_stop", std::bind(&Robotiq3fGripperROS::stopCallback, this, _1, _2));
+                this->create_service<std_srvs::srv::Trigger>("threef_gripper_stop", std::bind(&Robotiq3fGripperROS::stopCallback, this, _1, _2));
             service_open =
-                this->create_service<std_srvs::srv::Trigger>("3f_gripper_open", std::bind(&Robotiq3fGripperROS::openCallback, this, _1, _2));
+                this->create_service<std_srvs::srv::Trigger>("threef_gripper_open", std::bind(&Robotiq3fGripperROS::openCallback, this, _1, _2));
             service_close =
-                this->create_service<std_srvs::srv::Trigger>("3f_gripper_close", std::bind(&Robotiq3fGripperROS::closeCallback, this, _1, _2));
+                this->create_service<std_srvs::srv::Trigger>("threef_gripper_close", std::bind(&Robotiq3fGripperROS::closeCallback, this, _1, _2));
         }
 
         ~Robotiq3fGripperROS(){

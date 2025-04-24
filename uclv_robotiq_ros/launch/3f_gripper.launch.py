@@ -56,7 +56,7 @@ def generate_launch_description():
   
     gripper_node = Node(
         package="uclv_robotiq_ros",
-        executable="robotiq_2f_gripper_node",
+        executable="robotiq_3f_gripper_node",
         parameters=[{
             'modbus_type': LaunchConfiguration('modbus_type'),
             'gripper_ip': LaunchConfiguration('gripper_ip'),
