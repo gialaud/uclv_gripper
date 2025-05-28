@@ -172,18 +172,9 @@ namespace uclv
                 mode_changed = _gripper->changeMode(mode); // this will wait for mode change to complete
             }
 
-            if (mode_changed)
-            {
-                result->success = true;
-                goal_handle->succeed(result);
-                RCLCPP_INFO(this->get_logger(), "Mode changed successfully");
-            }
-            else
-            {
-                result->success = false;
-                goal_handle->abort(result);
-                RCLCPP_ERROR(this->get_logger(), "Failed to change mode");
-            }
+            result->success = mode_changed;
+            goal_handle->succeed(result);
+            RCLCPP_INFO(this->get_logger(), "Mode change completed");
         }
 
         void fingers_command_callbk(const uclv_robotiq_interfaces::msg::FingerCommandArray::ConstSharedPtr& msg)
